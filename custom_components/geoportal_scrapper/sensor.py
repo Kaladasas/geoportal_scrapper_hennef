@@ -16,7 +16,8 @@ from homeassistant.helpers.update_coordinator import (
     DataUpdateCoordinator,
 )
 
-from . import DOMAIN
+from .const import DOMAIN
+from .sensor_units import get_device_class_and_unit
 _LOGGER = logging.getLogger(__name__)
 
 # Definition der Funktion, die von Home Assistant aufgerufen wird, um das Gerät zu erstellen
@@ -31,7 +32,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry,
         for device_id, entity_dict in connector.devices.items():
             device_name = entity_dict["name"]
             for entity_name, entity_state in entity_dict.items():
-                if entity_name is not "name":
+                if entity_name != "name":
                     sensor_list.append(GeoportalSensor(connector, entity_name, entity_state, device_id, device_name))
     
     async_add_entities(sensor_list)
@@ -46,6 +47,8 @@ class GeoportalSensor(CoordinatorEntity, SensorEntity):
         self._state = state
         self._device_id = device_id
         self._device_name = device_name
+
+        self._device_class, self._unit = get_device_class_and_unit(name, coordinator.category)
 
     # Diese Methode gibt die aktuellen Sensorwerte zurueck
     @property
@@ -62,6 +65,11 @@ class GeoportalSensor(CoordinatorEntity, SensorEntity):
     def unique_id(self) -> str | None:
         """Return a unique ID."""
         return f"{self._device_id}_{self._name}"
+
+    @property
+    def unit_of_measurement(self):
+        """Return the unit of measurement."""
+        return self._unit
     
     @property
     def device_info(self) -> DeviceInfo:
@@ -70,6 +78,6 @@ class GeoportalSensor(CoordinatorEntity, SensorEntity):
             configuration_url= f"{self.coordinator.url}",
             identifiers={(DOMAIN, self._device_id)},
             manufacturer="Klimakleber",
-            model="GeoportalDevice",
+            model=self.coordinator.category,
             name=self._device_name,
         )
