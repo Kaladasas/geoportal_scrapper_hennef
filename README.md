@@ -2,15 +2,15 @@
 
 A scrapper for data from geoportal provided by Hennef  
 
-!\[Dashboard Example\](dashboard\_example.jpg "Dashboard Example")
+![Dashboard Example](dashboard_example.JPG)
 
 This is a Home Assistant Project specificly designed for the city Hennef (NRW/Germany).
 
 It is a json scrapper that will get values by Hennef and creates sensors and devices based on attribute dictionaries.
 
-Used URLs are defined here: \[Geoportal Links\](./custom\_components/geoportal\_scrapper/\_\_init\_\_.py)
+Used URLs are defined here: [Geoportal Links](./custom_components/geoportal_scrapper/__init__%20.py#L18-L21)
 
-When changing them the \[category definition\](./cutom\_components/geoportal\_scrapper/hub.py#42) might break so make changes accordingly.
+When changing them the [category definition](./custom_components/geoportal_scrapper/hub.py#L42-L43) might break so make changes accordingly.
 
 Information about possible device classes and unit of measurements can be found here:
 
