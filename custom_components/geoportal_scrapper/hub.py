@@ -30,7 +30,11 @@ class Hub:
 
 
 class GeoportalConnector(DataUpdateCoordinator):
-    """One connector per url"""
+    """One connector per url
+    
+    This will provide the states for all attributes
+    found behind the provided URL
+    """
 
     def __init__(self, hass: HomeAssistant, url: str) -> None:
         """Init geoportal connector"""
@@ -66,6 +70,10 @@ class GeoportalConnector(DataUpdateCoordinator):
         
         
     async def collect_data(self):
+        """Create a dictionary based on the scrapped attributes
+
+        Every attribute group will be handled as one device
+        """
         _LOGGER.debug(f"# Collect data for connector {self.category}")
         device_dict = {}
         

@@ -21,8 +21,7 @@ url_list = ["https://geoportal.stadt-hennef.de/mapserver/rest/services/Hosted/So
             "https://geoportal.stadt-hennef.de/mapserver/rest/services/Hosted/Pegelstand_Ansicht/FeatureServer/2/query?where=1%3D1&outFields=*&f=json"]
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """
-    Set up the Geoportal component.
+    """ Mandatory setup function to initilize this component
     """
     _LOGGER.debug(f"# Start loading geoportal scrapper {entry.entry_id}")
     hass.data.setdefault(DOMAIN, {})
@@ -30,6 +29,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data[DOMAIN][entry.entry_id] = geoportal_hub
     
     for coordinator in geoportal_hub.connectors:
+        # Scrap the attributes and values for the first time
         await coordinator.async_setup()
 
     # This creates each HA object for each platform your device requires.
@@ -39,10 +39,10 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     return True
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
-    """Unload a config entry."""
-    # This is called when an entry/configured device is to be removed. The class
-    # needs to unload itself, and remove callbacks. See the classes for further
-    # details
+    """Unload a config entry
+    This is called when an entry/configured device is to be removed. The class
+    needs to unload itself, and remove callbacks. See the classes for further details
+    """
     unload_ok = await hass.config_entries.async_forward_entry_unload(entry, Platform.SENSOR)
     if unload_ok:
         hass.data[DOMAIN].pop(entry.entry_id)
