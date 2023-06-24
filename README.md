@@ -2,7 +2,7 @@
 
 A scrapper for data from geoportal provided by Hennef  
 
-!\[Dashboard Example\](./dashboard\_example.jpg)
+!\[Dashboard Example\](dashboard\_example.jpg "Dashboard Example")
 
 This is a Home Assistant Project specificly designed for the city Hennef (NRW/Germany).
 
